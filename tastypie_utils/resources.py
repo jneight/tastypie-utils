@@ -2,10 +2,8 @@
 
 from django.core.exceptions import ObjectDoesNotExist
 
-from tastypie.resources import ModelResource
 
-
-class GetMultipleResourceMixin(ModelResource):
+class GetMultipleResourceMixin(object):
 
     """
     When doing a GET with multiple ids (/1;2;3;4/), tastypie does one database
@@ -94,3 +92,4 @@ class GetMultipleResourceMixin(ModelResource):
         except ValueError:
             raise BadRequest("Invalid resource lookup data provided"
                              " (mismatched type).")
+

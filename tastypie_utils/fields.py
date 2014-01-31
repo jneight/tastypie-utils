@@ -40,7 +40,7 @@ class Base64FileField(fields.FileField):
             KeyError if format is not valid
 
         """
-        # TODO: handle when value is none
+        
         value = super(Base64FileField, self).hydrate(bundle)
         if value:
             try:
@@ -52,10 +52,7 @@ class Base64FileField(fields.FileField):
                     'upload_image' + extension,
                     base64.b64decode(data['base64']),
                     data.get('data', 'application/octet-stream'))
-            # TODO: handle exceptions
-            except ValueError:
-                raise
-            except KeyError:
+            except (ValueError, KeyError):
                 raise
         return value
 

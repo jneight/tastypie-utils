@@ -40,7 +40,7 @@ class Base64FileField(fields.FileField):
             KeyError if format is not valid
 
         """
-        
+
         value = super(Base64FileField, self).hydrate(bundle)
         if value:
             try:
@@ -130,8 +130,12 @@ class CheckToManyField(fields.ToManyField):
                             permission check and does not support null" %
                                         (self.attribute))
                 else:
-                    return []
-        return super(CheckToManyField, self).dehydrate(bundle, for_list=True)
+                    return None
+        result = super(CheckToManyField, self).dehydrate(bundle, for_list)
+        # avoid returning [[]]
+        if not result or not result[0]:
+            return []
+        return result
 
     def dehydrate_related(self, bundle, related_resource, for_list=True):
         if self.check is not None:
@@ -141,7 +145,7 @@ class CheckToManyField(fields.ToManyField):
                             permission check and does not support null" %
                                         (self.attribute))
                 else:
-                    return []
+                    return None
         return super(CheckToManyField, self).dehydrate_related(
             bundle, related_resource, for_list)
 
